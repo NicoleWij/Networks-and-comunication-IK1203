@@ -35,20 +35,26 @@ public class TCPClient {
         int count = 0;
 
         try{
-            if (this.limit < this.BUFFERSIZE){
-                buffer = new byte[this.limit];
-                this.BUFFERSIZE = this.limit;
-            }
-
-            while(((a = i.read(buffer)) != -1)){
-                if(limit != null && ((count * this.BUFFERSIZE) >= limit)){
-                    socket.close();
-                    return o.toByteArray();
+            if(this.limit != null){
+                if (this.limit < this.BUFFERSIZE){
+                    buffer = new byte[this.limit];
+                    this.BUFFERSIZE = this.limit;
                 }
-                o.write(buffer, 0, a);
-                count++;
 
-                if ((count * this.BUFFERSIZE) + this.BUFFERSIZE > this.limit) buffer = new byte[this.limit - (count * this.BUFFERSIZE)];
+                while(((a = i.read(buffer)) != -1)){
+                    if(limit != null && ((count * this.BUFFERSIZE) >= limit)){
+                        socket.close();
+                        return o.toByteArray();
+                    }
+                    o.write(buffer, 0, a);
+                    count++;
+
+                    if ((count * this.BUFFERSIZE) + this.BUFFERSIZE > this.limit) buffer = new byte[this.limit - (count * this.BUFFERSIZE)];
+                }
+            }else{
+                while((a = i.read(buffer)) != -1){
+                    o.write(buffer, 0, a);
+                }
             }
         } catch(SocketTimeoutException e) {
             socket.close();
