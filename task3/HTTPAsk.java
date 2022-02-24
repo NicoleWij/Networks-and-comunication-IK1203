@@ -40,7 +40,7 @@ public class HTTPAsk {
                     continue;
                 }
 
-                if (!(url.contains("hostname")) || !(url.contains("port"))) {
+                if (!(url.contains("hostname")) || !(url.contains("port")) || !(url.contains("HTTP/1.1")) || !(url.contains("GET"))) {
                     stringBuild.append("HTTP/1.1 400 Bad Request\r\n");
                     output.write(stringBuild.toString().getBytes());
                     socket.close();
